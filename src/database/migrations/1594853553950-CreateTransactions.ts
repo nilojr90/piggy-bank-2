@@ -31,6 +31,7 @@ export default class CreateTransactions1594853553950 implements MigrationInterfa
               {
                 name:'category_id',
                 type:'varchar',
+                isNullable: true,
               },
               {
                 name:'created_at',
