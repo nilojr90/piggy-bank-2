@@ -1,12 +1,14 @@
 import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
 
+import AppError from '../errors/AppError';
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import Transaction from '../models/Transaction';
 import CreateTransactionService from '../services/CreateTransactionService';
 // import CreateTransactionService from '../services/CreateTransactionService';
 // import DeleteTransactionService from '../services/DeleteTransactionService';
 // import ImportTransactionsService from '../services/ImportTransactionsService';
+
 
 const transactionsRouter = Router();
 
@@ -49,7 +51,8 @@ transactionsRouter.post('/', async (request, response) => {
 
   } catch (error) {
     return response.status(400).json({
-      error: error.message,
+      "message": error.message,
+      "status": "error"
     });
   }
 });
