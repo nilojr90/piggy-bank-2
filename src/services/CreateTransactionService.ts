@@ -8,19 +8,18 @@ import CreateCategoryService from './CreateCategoryService'
 interface Request{
   title: string,
   type: 'income' | 'outcome';
-  value: Number,
+  value: number,
   category: string,
 }
 
 class CreateTransactionService {
   public async execute({ title, type, value, category}: Request): Promise<Transaction> {
-
     const transactionRepository = getCustomRepository(TransactionsRepository);
 
-    if(type == 'outcome'){
+    if(type == "outcome"){
       const balance = await transactionRepository.getBalance();
-      if( (balance.total <= 0 )|| (value > balance.total) ){
-        throw new AppError("Saldo insuficiente",400);
+      if( value > balance.total){
+        throw new AppError("Saldo insuficiente", 400);
       }
     }
 
@@ -28,12 +27,12 @@ class CreateTransactionService {
     const myCategory = await createCategoryService.execute(category);
 
 
-    const transaction = await transactionRepository.create({
-     title, type, value, category:myCategory
+    const transaction = transactionRepository.create({
+     title, type, value:value.toString(), category:myCategory
     });
 
-    await transactionRepository.save(transaction);
-    return transaction;
+
+    return await transactionRepository.save(transaction);
   }
 }
 

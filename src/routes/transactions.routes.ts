@@ -47,10 +47,10 @@ transactionsRouter.post('/', async (request, response) => {
       title,type,value,category
     });
 
-    return response.json(transaction);
+    return response.json({"id":transaction.id});
 
   } catch (error) {
-    return response.status(400).json({
+    return response.status(error.statusCode).json({
       "message": error.message,
       "status": "error"
     });
