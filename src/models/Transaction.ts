@@ -14,16 +14,16 @@ import Category from './Category';
 class Transaction {
 
   @PrimaryGeneratedColumn('uuid')
-  id: String;
+  id: string;
 
   @Column()
-  title: String;
+  title: string;
 
   @Column()
   type: 'income' | 'outcome';
 
-  @Column('decimal')
-  value: Number;
+  @Column({type:'decimal', precision:10, scale:2})
+  value: string;
 
   @ManyToOne(() => Category)
   @JoinColumn({name:'category_id'})
@@ -34,6 +34,19 @@ class Transaction {
 
   @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
+
+  public getValue(): number{
+    if(this.value == undefined){
+      return 0.0;
+    }
+    return parseFloat(this.value);
+  }
+
+  public setValue(newValue:number): void{
+    this.value = newValue.toString();
+  }
 }
+
+
 
 export default Transaction;
