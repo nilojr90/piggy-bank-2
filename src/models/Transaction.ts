@@ -2,6 +2,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
   ManyToOne,
   JoinColumn
 } from 'typeorm';
@@ -25,12 +27,12 @@ class Transaction {
 
   @ManyToOne(() => Category)
   @JoinColumn({name:'category_id'})
-  categoty: Category;
+  category: Category;
 
-  @Column('timestamp with time zone')
+  @CreateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @Column('timestamp with time zone')
+  @UpdateDateColumn({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   updated_at: Date;
 }
 

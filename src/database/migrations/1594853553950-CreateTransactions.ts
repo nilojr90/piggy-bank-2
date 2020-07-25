@@ -12,7 +12,7 @@ export default class CreateTransactions1594853553950 implements MigrationInterfa
                 type:'varchar',
                 isPrimary: true,
                 generationStrategy: 'uuid',
-                default:"'uuid_generate_v4'",
+                default:"uuid_generate_v4()",
               },
               {
                 name:'title',
@@ -36,10 +36,12 @@ export default class CreateTransactions1594853553950 implements MigrationInterfa
               {
                 name:'created_at',
                 type:'timestamp with time zone',
+                default: 'CURRENT_TIMESTAMP',
               },
               {
                 name:'updated_at',
                 type:'timestamp with time zone',
+                default: 'CURRENT_TIMESTAMP',
               },
             ]
         })

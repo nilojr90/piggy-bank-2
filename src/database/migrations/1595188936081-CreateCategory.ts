@@ -11,7 +11,7 @@ export class CreateCategory1595188936081 implements MigrationInterface {
             type:'varchar',
             isPrimary: true,
             generationStrategy: 'uuid',
-            default:"'uuid_generate_v4'",
+            default:"uuid_generate_v4()",
           },
           {
             name:'title',
@@ -20,10 +20,12 @@ export class CreateCategory1595188936081 implements MigrationInterface {
           {
             name:'created_at',
             type:'timestamp with time zone',
+            default: 'CURRENT_TIMESTAMP',
           },
           {
             name:'updated_at',
             type:'timestamp with time zone',
+            default: 'CURRENT_TIMESTAMP',
           },
         ]
       }));
