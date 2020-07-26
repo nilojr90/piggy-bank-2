@@ -13,13 +13,13 @@ import CreateTransactionService from '../services/CreateTransactionService';
 const transactionsRouter = Router();
 
 
-interface Balance{
+interface Balance {
   income: number,
   outcome: number,
   total: number
 };
 
-interface Response{
+interface Response {
   transactions: Transaction[],
   balance: Balance
 }
@@ -40,14 +40,14 @@ transactionsRouter.get('/', async (request, response) => {
 
 transactionsRouter.post('/', async (request, response) => {
   try {
-    const{title,type,value,category=''} = request.body;
+    const { title, type, value, category = '' } = request.body;
 
     const createTransactionService = new CreateTransactionService();
     const transaction = await createTransactionService.execute({
-      title,type,value,category
+      title, type, value, category
     });
 
-    return response.json({"id":transaction.id});
+    return response.json({ "id": transaction.id });
 
   } catch (error) {
     return response.status(error.statusCode).json({
@@ -58,7 +58,24 @@ transactionsRouter.post('/', async (request, response) => {
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
-  // TODO
+  const { id } = request.params;
+  const transactionsRepository = getCustomRepository(TransactionsRepository);
+
+  await transactionsRepository.findOneOrFail({
+    id
+  }).catch(() => {
+    return response.status(400).json({
+        "message": "Id não existe.",
+        "status": "error"
+      });
+  });
+
+  await transactionsRepository.delete({
+    id
+  });
+
+  return response.status(204).send();
+
 });
 
 transactionsRouter.post('/import', async (request, response) => {
