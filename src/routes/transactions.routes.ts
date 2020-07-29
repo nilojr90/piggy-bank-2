@@ -1,16 +1,18 @@
 import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
 
-import AppError from '../errors/AppError';
+
+
+
 import TransactionsRepository from '../repositories/TransactionsRepository';
 import Transaction from '../models/Transaction';
 import CreateTransactionService from '../services/CreateTransactionService';
-// import CreateTransactionService from '../services/CreateTransactionService';
-// import DeleteTransactionService from '../services/DeleteTransactionService';
-// import ImportTransactionsService from '../services/ImportTransactionsService';
+import DeleteTransactionService from '../services/DeleteTransactionService';
+//import ImportTransactionsService from '../services/ImportTransactionsService';
 
 
 const transactionsRouter = Router();
+
 
 
 interface Balance {
@@ -58,28 +60,26 @@ transactionsRouter.post('/', async (request, response) => {
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
-  const { id } = request.params;
-  const transactionsRepository = getCustomRepository(TransactionsRepository);
+  try {
+    const { id } = request.params;
+    const deleteTransactionService = new DeleteTransactionService();
 
-  await transactionsRepository.findOneOrFail({
-    id
-  }).catch(() => {
-    return response.status(400).json({
-        "message": "Id não existe.",
-        "status": "error"
-      });
-  });
+    deleteTransactionService.execute(id);
 
-  await transactionsRepository.delete({
-    id
-  });
+    return response.status(204).send();
 
-  return response.status(204).send();
+  } catch (error) {
+    return response.status(error.statusCode).json({
+      "message": error.message,
+      "status": "error"
+    });
+  }
+
 
 });
 
 transactionsRouter.post('/import', async (request, response) => {
-  // TODO
+//TODO
 });
 
 export default transactionsRouter;
