@@ -16,10 +16,13 @@ class CreateCategoryService {
       const newCategory = categoryRepository.create({
         title
       });
-      await categoryRepository.save(newCategory);
+      await categoryRepository.save(newCategory)
+      .catch(() =>{
+        throw new AppError("Falha ao salvar categoria", 500);
+      });
       categoryExist = newCategory;
     }
-      return categoryExist;
+    return categoryExist;
   }
 }
 
