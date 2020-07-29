@@ -45,10 +45,8 @@ class ImportTransactionsService {
         importedTransactions.push(transaction);
       }
 
-      //Delete temp file after use.
-      fs.unlink(filePath,()=>{
-        console.log("Falha ao excluir arquivo temporario.");
-      });
+      //Delete temp file after use (asyncronous).
+      fs.unlink(filePath,()=>{});
 
       return importedTransactions;
     } catch (error) {

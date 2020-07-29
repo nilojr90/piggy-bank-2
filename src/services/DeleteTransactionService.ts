@@ -12,7 +12,7 @@ class DeleteTransactionService {
     await transactionsRepository.findOneOrFail({
       id
     }).catch(() => {
-      throw new AppError("Id não existe.");
+      throw new AppError("Id não existe.",400);
     });
 
     transactionsRepository.delete({
